@@ -13,6 +13,8 @@ class _SignUpState extends State<SignUpPage> {
   final _formKey = GlobalKey<FormState>();
   String? email;
   String? password;
+  String? firstName;
+  String? lastName;
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +27,14 @@ class _SignUpState extends State<SignUpPage> {
               key: _formKey,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: [heading, emailField, passwordField, submitButton],
+                children: [
+                  heading,
+                  nameField,
+                  lastNameField,
+                  emailField,
+                  passwordField,
+                  submitButton
+                ],
               ),
             )),
       ),
@@ -37,6 +46,40 @@ class _SignUpState extends State<SignUpPage> {
         child: Text(
           "Sign Up",
           style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+        ),
+      );
+
+  Widget get nameField => Padding(
+        padding: const EdgeInsets.only(bottom: 30),
+        child: TextFormField(
+          decoration: const InputDecoration(
+            border: OutlineInputBorder(),
+            label: Text("First Name"),
+          ),
+          onSaved: (value) => setState(() => firstName = value),
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return "Please enter a valid password";
+            }
+            return null;
+          },
+        ),
+      );
+
+  Widget get lastNameField => Padding(
+        padding: const EdgeInsets.only(bottom: 30),
+        child: TextFormField(
+          decoration: const InputDecoration(
+            border: OutlineInputBorder(),
+            label: Text("Last Name"),
+          ),
+          onSaved: (value) => setState(() => lastName = value),
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return "Please enter a valid password";
+            }
+            return null;
+          },
         ),
       );
 
@@ -82,7 +125,7 @@ class _SignUpState extends State<SignUpPage> {
           await context
               .read<UserAuthProvider>()
               .authService
-              .signUp(email!, password!);
+              .signUp(firstName!, lastName!, email!, password!);
 
           // check if the widget hasn't been disposed of after an asynchronous action
           if (mounted) Navigator.pop(context);

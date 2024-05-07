@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/auth_provider.dart';
-
+import 'package:email_validator/email_validator.dart';
 import 'signup_page.dart';
 
 class SignInPage extends StatefulWidget {
@@ -76,7 +76,7 @@ class _SignInPageState extends State<SignInPage> {
           obscureText: true,
           onSaved: (value) => setState(() => password = value),
           validator: (value) {
-            if (value == null || value.isEmpty) {
+            if (value == null || value.isEmpty || value.length < 6) {
               return "Please enter your password";
             }
             return null;
